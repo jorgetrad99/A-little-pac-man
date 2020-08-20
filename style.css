@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     width: 560px;
     height: 560px;
+    background-color: #000;
     border: solid black
 }
 
@@ -13,7 +14,7 @@
 
 .pac-dot {
     background-color: green;
-    border: 5px solid white;
+    border: 5px solid black;
     box-sizing: border-box;
 }
 
@@ -24,4 +25,34 @@
 .power-pellet {
     background-color: green;
     border-radius: 10px;
+}
+
+.pac-man {
+    background-color: yellow;
+    border-radius: 10px;
+}
+
+.blinky {
+    background-color: red;
+    border: 0px
+}
+
+.pinky {
+    background-color: pink;
+    border: 0px
+}
+
+.inky {
+    background-color: cyan;
+    border: 0
+}
+
+.clyde {
+    background-color: orange;
+    border: 0px
+}
+
+.scared-ghost {
+    background-color: aquamarine;
+    border: 0px;
 }
