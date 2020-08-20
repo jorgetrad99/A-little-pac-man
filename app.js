@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[pacmanCurrentIndex].classList.add('pac-man')
 
         pacDotEaten()
-        //powerPelletEaten()
+        powerPelletEaten()
         //checkForGameOver()
         //checkForWin()
     }
@@ -135,6 +135,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    //What happens when you eat a power-pellet
+    function powerPelletEaten() {
+        if(squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
+            score += 10
+            ghosts.forEach(ghost => ghost.isScared = true)
+            setTimeout(unScareGhosts, 10000)
+            squares[pacmanCurrentIndex].classList.remove('power-pellet')
+        }
+    }
+
+    //Make the ghosts stop appearing as aqumarine
+    function unScareGhosts() {
+        ghosts.forEach(ghost => ghost.isScared = false)
+    }
+
     //Create our Ghost template
     class Ghost {
         constructor(className, startIndex, speed){
@@ -143,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.speed = speed
             this.currentIndex = startIndex
             this.timerId = NaN
+            this.isScared = false
         }
     }
 
@@ -170,6 +186,32 @@ document.addEventListener('DOMContentLoaded', () => {
         ghost.timerId = setInterval(function() {
             /*if the next square your  ghost is gonna go in does NOT contain 
             a wall and a ghost, you can go there*/
+            if(!squares[ghost.currentIndex + direction].classList.contains('wall') &&
+            !squares[ghost.currentIndex + direction].classList.contains('ghost')){
+                //you can go here
+                squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost')
+                //change the current index to the new safe square
+                ghost.currentIndex += direction
+                //redraw the ghost in the new safe space
+                squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
+            } else {
+                //else find a new direction to try
+                direction = directions[Math.floor(Math.random() * directions.length)]
+            }
+
+            //If the ghost is currently scared
+            if(ghost.isScared) {
+                squares[ghost.currentIndex].classList.add('scared-ghost')
+            }
+
+            //If the ghost is scared and pacman runs into it
+            if(ghost.isScared && squares[ghost.currentIndex].classList.contains('pac-man')){
+                square[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost')
+                ghost.currentIndex = ghost.startIndex
+                score += 100
+                squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
+            }
+
         }, ghost.speed)
     }
 
